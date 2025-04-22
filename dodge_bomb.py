@@ -12,6 +12,22 @@ DELTA = {
     pg.K_RIGHT(+5, 0),
 }
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+def check_bound(rct: pg.Rect) -> tuple[bool,bool]
+
+
+def check_bound(rct: pg.Rect):
+    """
+    引数：こうかとんrectまたは爆弾rect
+    戻り値：判定結果タプル（横、縦）
+    画面内ならtrue,画面外ならfalse
+    """
+    yoko, tate = True, True#yokototatenohennsuu
+    if rct.left < 0 or WIDTH < rct.right: #gamennnaidattara
+        yoko = False
+    if rct.top < 0 or HEIGHT < rct.bottom: #gamennnaidattara
+        tate = False
+    return yoko, tate
+
 
 
 def main():
@@ -47,8 +63,17 @@ def main():
                 sum_mv[1] += mv[1]#上下方向
 
         kk_rct.move_ip(sum_mv)
+        if check_bound(kk_rct) != (True, True):#gamennnosotodattara
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])#gamennnainimodoす
+
         screen.blit(kk_img, kk_rct)#bakudannnoidou
         bb_rct.move_ip(vx, vy)#bakudannbyouga
+
+        yoko, tate = check_bound(bb_rct)
+        if not yoko:#sayuudotirakanihamideteitara
+            vx *= -1
+        if not tate:#jougehoukouni
+            vy *= -1
         screen.blit(bb_img,bb_rct)
 
         pg.display.update()
