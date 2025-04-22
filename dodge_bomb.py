@@ -55,6 +55,11 @@ def main():
                 return
         screen.blit(bg_img, [0, 0]) 
 
+        #こうかとんrectと爆弾rectが重なったら
+        if kk_rct.collidedict(bb_rct):
+            print("game over")
+            return
+
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]#合計移動量の蓄積        
         for key, mv in DELTA.items():
